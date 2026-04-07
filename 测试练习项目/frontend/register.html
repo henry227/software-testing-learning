@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户注册 - 注册登录系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .form-container {
+            padding: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #475569;
+            font-weight: 600;
+        }
+        
+        .input-wrapper {
+            position: relative;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4f46e5;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        .input-error {
+            border-color: #ef4444;
+        }
+        
+        .input-success {
+            border-color: #10b981;
+        }
+        
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .success-message {
+            color: #10b981;
+            font-size: 0.875rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .password-strength {
+            margin-top: 5px;
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .strength-weak {
+            background: #ef4444;
+            width: 33%;
+        }
+        
+        .strength-medium {
+            background: #f59e0b;
+            width: 66%;
+        }
+        
+        .strength-strong {
+            background: #10b981;
+            width: 100%;
+        }
+        
+        .verification-code {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .verification-code input {
+            flex: 1;
+        }
+        
+        .btn-send-code {
+            padding: 15px 20px;
+            background: #f1f5f9;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            color: #475569;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .btn-send-code:hover:not(:disabled) {
+            background: #e2e8f0;
+        }
+        
+        .btn-send-code:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .checkbox-group input {
+            width: auto;
+            margin-top: 3px;
+        }
+        
+        .checkbox-group label {
+            margin-bottom: 0;
+            font-weight: normal;
+        }
+        
+        .terms-link {
+            color: #4f46e5;
+            text-decoration: none;
+        }
+        
+        .terms-link:hover {
+            text-decoration: underline;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+            border: 2px solid #cbd5e1;
+        }
+        
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+        
+        .test-hints {
+            background: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+        
+        .test-hints h3 {
+            color: #3b82f6;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        
+        .test-hints ul {
+            padding-left: 20px;
+        }
+        
+        .test-hints li {
+            margin-bottom: 5px;
+        }
+        
+        footer {
+            background: #f8fafc;
+            padding: 20px;
+            text-align: center;
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 30px 20px;
+            }
+            
+            header {
+                padding: 25px 20px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>用户注册</h1>
+            <p class="subtitle">创建您的测试账户</p>
+        </header>
+        
+        <div class="form-container">
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="username">用户名 *</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="username" name="username" 
+                               placeholder="4-20位字母或数字" 
+                               minlength="4" maxlength="20"
+                               pattern="[A-Za-z0-9]+"
+                               required>
+                    </div>
+                    <div class="error-message" id="usernameError">用户名必须是4-20位字母或数字</div>
+                    <div class="success-message" id="usernameSuccess">用户名可用</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">邮箱地址 *</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="email" name="email" 
+                               placeholder="example@test.com" 
+                               required>
+                    </div>
+                    <div class="error-message" id="emailError">请输入有效的邮箱地址</div>
+                    <div class="success-message" id="emailSuccess">邮箱格式正确</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">密码 *</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" name="password" 
+                               placeholder="8-20位，包含大小写字母和数字" 
+                               minlength="8" maxlength="20"
+                               required>
+                    </div>
+                    <div class="password-strength">
+                        <div class="strength-bar" id="passwordStrength"></div>
+                    </div>
+                    <div class="error-message" id="passwordError">密码必须包含大小写字母和数字，长度8-20位</div>
+                    <div class="success-message" id="passwordSuccess">密码强度足够</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">确认密码 *</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="confirmPassword" name="confirmPassword" 
+                               placeholder="再次输入密码" 
+                               required>
+                    </div>
+                    <div class="error-message" id="confirmPasswordError">两次输入的密码不一致</div>
+                    <div class="success-message" id="confirmPasswordSuccess">密码匹配</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="verificationCode">验证码 *</label>
+                    <div class="verification-code">
+                        <input type="text" id="verificationCode" name="verificationCode" 
+                               placeholder="4位数字" 
+                               pattern="[0-9]{4}"
+                               maxlength="4"
+                               required>
+                        <button type="button" class="btn-send-code" id="sendCodeBtn">发送验证码</button>
+                    </div>
+                    <div class="error-message" id="codeError">验证码必须是4位数字</div>
+                    <div class="success-message" id="codeSuccess">验证码格式正确</div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                        <label for="agreeTerms">
+                            我已阅读并同意
+                            <a href="#" class="terms-link">《用户协议》</a>
+                            和
+                            <a href="#" class="terms-link">《隐私政策》</a>
+                        </label>
+                    </div>
+                    <div class="error-message" id="termsError">请同意用户协议</div>
+                </div>
+                
+                <div class="buttons">
+                    <button type="submit" class="btn btn-primary" id="registerBtn" disabled>立即注册</button>
+                    <a href="login.html" class="btn btn-secondary">已有账户？去登录</a>
+                </div>
+            </form>
+            
+            <div class="test-hints">
+                <h3>测试提示：</h3>
+                <ul>
+                    <li>测试边界值：用户名3位/21位，密码7位/21位</li>
+                    <li>测试特殊字符：用户名包含@#$等特殊字符</li>
+                    <li>测试密码强度：全小写、全大写、无数字</li>
+                    <li>测试验证码：错误验证码、过期验证码</li>
+                    <li>测试协议同意：不勾选协议直接注册</li>
+                </ul>
+            </div>
+        </div>
+        
+        <footer>
+            <p>这是一个用于软件测试练习的教学页面</p>
+            <p>请尝试各种测试用例来验证系统的健壮性</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 表单验证逻辑
+        const form = document.getElementById('registerForm');
+        const usernameInput = document.getElementById('username');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const codeInput = document.getElementById('verificationCode');
+        const termsCheckbox = document.getElementById('agreeTerms');
+        const registerBtn = document.getElementById('registerBtn');
+        
+        // 显示/隐藏错误消息
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            const successElement = document.getElementById(elementId.replace('Error', 'Success'));
+            
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+            if (successElement) {
+                successElement.style.display = 'none';
+            }
+        }
+        
+        function showSuccess(elementId) {
+            const errorElement = document.getElementById(elementId.replace('Success', 'Error'));
+            const successElement = document.getElementById(elementId);
+            
+            if (errorElement) {
+                errorElement.style.display = 'none';
+            }
+            if (successElement) {
+                successElement.style.display = 'block';
+            }
+        }
+        
+        // 密码强度检查
+        function checkPasswordStrength(password) {
+            const strengthBar = document.getElementById('passwordStrength');
+            let strength = 0;
+            
+            // 长度检查
+            if (password.length >= 8) strength += 1;
+            if (password.length >= 12) strength += 1;
+            
+            // 复杂度检查
+            if (/[a-z]/.test(password)) strength += 1; // 小写字母
+            if (/[A-Z]/.test(password)) strength += 1; // 大写字母
+            if (/[0-9]/.test(password)) strength += 1; // 数字
+            
+            // 更新强度条
+            strengthBar.className = 'strength-bar';
+            if (strength <= 2) {
+                strengthBar.classList.add('strength-weak');
+                return 'weak';
+            } else if (strength <= 4) {
+                strengthBar.classList.add('strength-medium');
+                return 'medium';
+            } else {
+                strengthBar.classList.add('strength-strong');
+                return 'strong';
+            }
+        }
+        
+        // 用户名验证
+        usernameInput.addEventListener('input', function() {
+            const username = this.value;
+            const usernamePattern = /^[A-Za-z0-9]{4,20}$/;
+            
+            if (!username) {
+                showError('usernameError', '用户名不能为空');
+                this.classList.remove('input-success');
+                this.classList.add('input-error');
+            } else if (!usernamePattern.test(username)) {
+                showError('usernameError', '用户名必须是4-20位字母或数字');
+                this.classList.remove('input-success');
+                this.classList.add('input-error');
+            } else {
+                // 模拟检查用户名是否已存在
+                const existingUsers = ['admin', 'testuser', 'user123'];
+                if (existingUsers.includes(username)) {
+                    showError('usernameError', '用户名已存在');
+                    this.classList.remove('input-success');
+                    this.classList.add('input-error');
+                } else {
+                    showSuccess('usernameSuccess');
+                    this.classList.remove('input-error');
+                    this.classList.add('input-success');
+                }
+            }
+            validateForm();
+        });
+        
+        // 邮箱验证
+        emailInput.addEventListener('input', function() {
+            const email = this.value;
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!email) {
+                showError('emailError', '邮箱不能为空');
+                this.classList.remove('input-success');
+                this.classList.add('input-error');
+            } else if (!emailPattern.test(email)) {
+                showError('emailError', '请输入有效的邮箱地址');
+                this.classList.remove('input-success');
+                this.classList.add('input-error');
+            } else {
+                // 模拟检查邮箱是否已注册
+                const existingEmails = ['admin@test.com', 'test@example.com'];
+                if (existingEmails.includes(email)) {
+                    showError('emailError', '邮箱已被注册');
+                    this.classList.remove('input-success');
+                    this.classList.add('input-error');
+                } else {
+                    showSuccess('emailSuccess');
+                    this.classList.remove('input-error');
+                    this.classList.add('input-success');
+                }
+            }
+            validateForm();
+        });
+        
+        // 密码验证
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,20}$/;
+            
+            if (!password) {
+                showError('passwordError', '密码不能为空');
+                this.classList.remove('input-success');
+                this.classList.add('input-error');
+            } else if (!passwordPattern.test(password)) {
+                showError('passwordError', '密码必须包含大小写字母和数字，长度8-20位');
+                this.classList.remove('input-success');
+                this.classList.add('input-error');
+            } else {
+                showSuccess('passwordSuccess');
+                this.classList.remove('input-error');
+                this.classList.add('input-success');
+            }
+            
+            // 检查密码强度
+            checkPasswordStrength(password);
+            
+            // 如果确认密码已输入，检查是否匹配
+            if (confirmPasswordInput.value) {
+                if (password !== confirmPasswordInput.value) {
+                    showError('confirmPasswordError', '两次输入的密码不一致');
+                    confirmPasswordInput.classList.remove('input-success');
+                    confirmPasswordInput.classList.add('input-error');
+                } else {
+                    showSuccess('confirmPasswordSuccess');
+                    confirmPasswordInput.classList.remove('input-error');
+                    confirmPasswordInput.classList.add('input-success');
+                }
+            }
+            
+            validateForm();
+        });
+        
+        // 确认密码验证
+        confirmPasswordInput.addEventListener('input', function() {
+            const password = passwordInput.value;
+            const confirmPassword = this.value;
+            
+            if (!confirmPassword) {
+                showError('confirmPasswordError', '请确认密码');
+                this.classList.remove('input-success');
+                this.classList.add('input-error');
+            } else if (password !== confirmPassword) {
+                showError('confirmPasswordError', '两次输入的密码不一致');
+                this.classList.remove('input-success');
+                this.classList.add('input-error');
+            } else {
+                showSuccess('confirmPasswordSuccess');
+                this.classList.remove('input-error');
+                this.classList.add('input-success');
+            }
+            validateForm();
+        });
+        
+        // 验证码验证
+        codeInput.addEventListener('input', function() {
+            const code = this.value;
+            const codePattern = /^[0-9]{4}$/;
+            
+            if (!code) {
+                showError('codeError', '验证码不能为空');
+                this.classList.remove('input-success');
+                this.classList.add('input-error');
+            } else if (!codePattern.test(code)) {
+                showError('codeError', '验证码必须是4位数字');
+                this.classList.remove('input-success');
+                this.classList.add('input-error');
+            } else {
+                showSuccess('codeSuccess');
+                this.classList.remove('input-error');
+                this.classList.add('input-success');
+            }
+            validateForm();
+        });
+        
+        // 发送验证码按钮
+        const sendCodeBtn = document.getElementById('sendCodeBtn');
+        let countdown = 0;
+        let countdownInterval;
+        
+        sendCodeBtn.addEventListener('click', function() {
+            if (countdown > 0) return;
+            
+            // 检查邮箱是否有效
+            const email = emailInput.value;
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!email || !emailPattern.test(email)) {
+                showError('emailError', '请输入有效的邮箱地址以发送验证码');
+                emailInput.classList.add('input-error');
+                return;
+            }
+            
+            // 模拟发送验证码
+            const code = Math.floor(1000 + Math.random() * 9000).toString();
+            console.log(`验证码已发送到 ${email}: ${code}`);
+            
+            // 开始倒计时
+            countdown = 60;
+            sendCodeBtn.disabled = true;
+            sendCodeBtn.textContent = `${countdown}秒后重发`;
+            
+            countdownInterval = setInterval(() => {
+                countdown--;
+                if (countdown > 0) {
+                    sendCodeBtn.textContent = `${countdown}秒后重发`;
+                } else {
+                    clearInterval(countdownInterval);
+                    sendCodeBtn.disabled = false;
+                    sendCodeBtn.textContent = '发送验证码';
+                }
+            }, 1000);
+            
+            // 提示用户
+            alert(`测试提示：验证码 ${code} 已发送到 ${email}\n（在实际系统中会发送到邮箱）`);
+        });
+        
+        // 协议复选框验证
+        termsCheckbox.addEventListener('change', function() {
+            if (!this.checked) {
+                showError('termsError', '请同意用户协议');
+            } else {
+                const errorElement = document.getElementById('termsError');
+                if (errorElement) {
+                    errorElement.style.display = 'none';
+                }
+            }
+            validateForm();
+        });
+        
+        // 表单整体验证
+        function validateForm() {
+            const isUsernameValid = usernameInput.classList.contains('input-success');
+            const isEmailValid = emailInput.classList.contains('input-success');
+            const isPasswordValid = passwordInput.classList.contains('input-success');
+            const isConfirmPasswordValid = confirmPasswordInput.classList.contains('input-success');
+            const isCodeValid = codeInput.classList.contains('input-success');
+            const isTermsChecked = termsCheckbox.checked;
+            
+            const isValid = isUsernameValid && isEmailValid && isPasswordValid && 
+                           isConfirmPasswordValid && isCodeValid && isTermsChecked;
+            
+            registerBtn.disabled = !isValid;
+            return isValid;
+        }
+        
+        // 表单提交
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                alert('请检查表单填写是否正确');
+                return;
+            }
+            
+            // 模拟注册请求
+            const userData = {
+                username: usernameInput.value,
+                email: emailInput.value,
+                password: passwordInput.value,
+                verificationCode: codeInput.value,
+                agreeTerms: termsCheckbox.checked
+            };
+            
+            console.log('注册数据:', userData);
+            
+            // 模拟API请求
+            registerBtn.disabled = true;
+            registerBtn.textContent = '注册中...';
+            
+            setTimeout(() => {
+                // 模拟成功响应
+                const success = Math.random() > 0.2; // 80%成功率，模拟可能的失败
+                
+                if (success) {
+                    // 保存用户信息到本地存储
+                    localStorage.setItem('currentUser', JSON.stringify({
+                        username: userData.username,
+                        email: userData.email,
+                        registeredAt: new Date().toISOString()
+                    }));
+                    
+                    alert('注册成功！即将跳转到登录页面');
+                    window.location.href = 'login.html';
+                } else {
+                    // 模拟可能的失败情况
+                    const errors = [
+                        '网络连接失败，请重试',
+                        '服务器暂时不可用',
+                        '验证码已过期，请重新获取',
+                        '用户名已被注册（并发注册）'
+                    ];
+                    const error = errors[Math.floor(Math.random() * errors.length)];
+                    
+                    alert(`注册失败：${error}`);
+                    registerBtn.disabled = false;
+                    registerBtn.textContent = '立即注册';
+                }
+            }, 1500);
+        });
+        
+        // 初始化表单验证
+        validateForm();
+        
+        // 测试辅助：预填充测试数据
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+1: 填充有效测试数据
+            if (e.ctrlKey && e.key === '1') {
+                e.preventDefault();
+                usernameInput.value = 'testuser' + Math.floor(Math.random() * 1000);
+                emailInput.value = 'test' + Math.floor(Math.random() * 1000) + '@example.com';
+                passwordInput.value = 'Test123456';
+                confirmPasswordInput.value = 'Test123456';
+                codeInput.value = '1234';
+                termsCheckbox.checked = true;
+                
+                // 触发输入事件以更新验证状态
+                ['input', 'change'].forEach(event => {
+                    usernameInput.dispatchEvent(new Event(event));
+                    emailInput.dispatchEvent(new Event(event));
+                    passwordInput.dispatchEvent(new Event(event));
+                    confirmPasswordInput.dispatchEvent(new Event(event));
+                    codeInput.dispatchEvent(new Event(event));
+                    termsCheckbox.dispatchEvent(new Event(event));
+                });
+                
+                console.log('已填充有效测试数据');
+            }
+            
+            // Ctrl+2: 填充无效测试数据
+            if (e.ctrlKey && e.key === '2') {
+                e.preventDefault();
+                usernameInput.value = 'ab'; // 太短
+                emailInput.value = 'invalid-email';
+                passwordInput.value = 'weak';
+                confirmPasswordInput.value = 'different';
+                codeInput.value = 'abc'; // 非数字
+                termsCheckbox.checked = false;
+                
+                // 触发输入事件以更新验证状态
+                ['input', 'change'].forEach(event => {
+                    usernameInput.dispatchEvent(new Event(event));
+                    emailInput.dispatchEvent(new Event(event));
+                    passwordInput.dispatchEvent(new Event(event));
+                    confirmPasswordInput.dispatchEvent(new Event(event));
+                    codeInput.dispatchEvent(new Event(event));
+                    termsCheckbox.dispatchEvent(new Event(event));
+                });
+                
+                console.log('已填充无效测试数据');
+            }
+        });
+        
+        console.log('测试快捷键：');
+        console.log('Ctrl+1: 填充有效测试数据');
+        console.log('Ctrl+2: 填充无效测试数据');

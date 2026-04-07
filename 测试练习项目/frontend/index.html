@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册登录系统 - 首页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding: 40px;
+        }
+        
+        .section {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 30px;
+            transition: transform 0.3s ease;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #4f46e5;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .feature-list {
+            list-style: none;
+        }
+        
+        .feature-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-list li::before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .test-info {
+            background: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+            border: 2px solid #cbd5e1;
+        }
+        
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+        
+        footer {
+            background: #f8fafc;
+            padding: 20px;
+            text-align: center;
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            header {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>注册登录系统测试练习</h1>
+            <p class="subtitle">软件测试实战项目 - 掌握测试技能的最佳实践</p>
+        </header>
+        
+        <div class="content">
+            <div class="section">
+                <h2>📋 系统功能</h2>
+                <ul class="feature-list">
+                    <li>用户注册功能（用户名、邮箱、密码）</li>
+                    <li>用户登录功能（用户名/邮箱登录）</li>
+                    <li>密码强度验证与确认</li>
+                    <li>验证码验证机制</li>
+                    <li>用户协议同意检查</li>
+                    <li>个人中心信息管理</li>
+                    <li>密码修改与安全设置</li>
+                    <li>记住登录状态功能</li>
+                </ul>
+                
+                <div class="test-info">
+                    <strong>测试重点：</strong>功能完整性、输入验证、错误处理、用户体验
+                </div>
+                
+                <div class="buttons">
+                    <a href="register.html" class="btn btn-primary">开始注册测试</a>
+                    <a href="login.html" class="btn btn-secondary">登录测试</a>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>🎯 测试任务</h2>
+                <ul class="feature-list">
+                    <li>功能测试 - 验证所有功能是否正常</li>
+                    <li>边界测试 - 测试输入边界条件</li>
+                    <li>错误处理测试 - 测试异常情况处理</li>
+                    <li>安全测试 - SQL注入、XSS攻击防护</li>
+                    <li>兼容性测试 - 不同浏览器/设备测试</li>
+                    <li>性能测试 - 并发用户登录测试</li>
+                    <li>自动化测试 - Selenium脚本编写</li>
+                    <li>API测试 - 接口功能验证</li>
+                </ul>
+                
+                <div class="test-info">
+                    <strong>学习目标：</strong>掌握完整的软件测试流程，从手动测试到自动化测试
+                </div>
+                
+                <div class="buttons">
+                    <a href="../test-cases/功能测试.md" class="btn btn-primary">查看测试用例</a>
+                    <a href="../automation/selenium-test.py" class="btn btn-secondary">自动化测试脚本</a>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>软件测试学习项目 | GitHub: henry227 | 创建时间: 2026-04-07</p>
+            <p>这是一个用于软件测试练习的教学项目，请勿用于生产环境</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 简单的本地存储检查
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = localStorage.getItem('currentUser');
+            if (user) {
+                const buttons = document.querySelector('.buttons');
+                const profileBtn = document.createElement('a');
+                profileBtn.href = 'profile.html';
+                profileBtn.className = 'btn btn-primary';
+                profileBtn.textContent = '进入个人中心';
+                buttons.appendChild(profileBtn);
+            }
+        });
+    </script>
+</body>
+</html>
